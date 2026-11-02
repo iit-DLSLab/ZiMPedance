@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "zimpedance"
+version = "1.0.0"
+description = "ZiMPedance: impedance-aware ZMP modeling and MPC for payload carrying with quadruped robots and passive arms (MuJoCo simulation)."
+authors = [
+    { name = "Giovanni B. Dessy", email = "giovanni.dessy@outlook.com" },
+]
+maintainers = [
+    { name = "Giovanni B. Dessy", email = "giovanni.dessy@outlook.com" },
+]
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+keywords = ["robotics", "quadruped", "locomotion", "model predictive control", "passive arm", "zmp", "mujoco"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+# Pinocchio >= 4.0 and acados come from conda and the acados submodule: see installation/.
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "gymnasium",
+    "mujoco==3.4.0",
+    "casadi==3.7.2",
+    "liecasadi",
+    "noise",
+    "tqdm",
+]
+
+[project.urls]
+Repository = "https://github.com/iit-DLSLab/ZiMPedance"
+
+[tool.hatch.build.targets.wheel]
+packages = ["quadruped_pympc", "gym_quadruped"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"

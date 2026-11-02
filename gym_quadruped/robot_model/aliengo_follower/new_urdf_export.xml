@@ -1,0 +1,304 @@
+<mujoco model="aliengo">
+    <compiler angle="radian" meshdir="./assets/" autolimits="true"/>
+    <option cone="elliptic" impratio="100" />
+    <size njmax="500" nconmax="100" />
+    <option gravity='0 0 -9.806' timestep='0.002'/>
+
+
+
+    <default>
+
+        <joint damping="0." armature="0.01" frictionloss="0." />
+        
+        <default class="follower/visual_arm">
+            <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+        <default class="follower/visual_srbd">
+            <geom contype="0" conaffinity="0" group="5"/>
+        </default>
+        <default class="follower/visual_arm_srbd">
+            <geom contype="0" conaffinity="0" group="5" rgba="0.173 0.627 0.173 0.0"/>
+        </default>
+        <default class="follower/visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+
+        <default class="follower/collision">
+            <geom group="3" rgba="0.2 0.2 0.2 0."/>
+        </default> 
+
+        <default class="follower/hip">
+            <motor ctrlrange="-4400.4 4400.4"/>
+        </default>
+        <default class="follower/thigh">
+            <motor ctrlrange="-3500.278 3500.278"/>
+        </default>
+        <default class="follower/calf">
+            <motor ctrlrange="-3500.278 3500.278"/>
+        </default>
+
+    </default>
+
+    <asset>
+        <mesh name="follower/trunk" file="trunk.stl" />
+        <mesh name="follower/hip" file="hip.stl" />
+        <mesh name="follower/thigh_mirror" file="thigh_mirror.stl" />
+        <mesh name="follower/calf" file="calf.stl" />
+        <mesh name="follower/thigh" file="thigh.stl" />
+        <mesh name="follower/base_arm_link" file="base_arm_link.stl" />
+        <mesh name="follower/arm_link_1" file="arm_link_1.stl" />
+        <mesh name="follower/arm_link_2" file="arm_link_2.stl" />
+        <mesh name="follower/arm_link_3" file="arm_link_3.stl" />
+        
+    </asset>
+
+  <worldbody>
+        <body name="follower/trunk" pos="0 0 0.4">
+            <inertial pos="0.00846406 0.00404455 -0.000762916" quat="-3.12625e-05 0.708321 0.00247254 0.705886" mass="13.042" diaginertia="0.174706 0.161175 0.033357" />
+            <freejoint/>
+            
+            <!-- trunk visual mesh and collision -->
+            <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/trunk" />
+            <!-- Visual-only SRBD proxy body: base oval -->
+            <geom type="ellipsoid"
+                  class="follower/visual_srbd"
+                  pos="0.02 0.0 0.015"
+                  size="0.2 0.1 0.08"
+                  rgba="0.12156863 0.4666666 0.70588235 0.85"/>
+            <!-- <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/trunk" mass="13.042"/> -->
+            <geom type="box" class="follower/collision" size="0.18 0.075 0.056"/>
+
+            <!-- modify this to add payload -->
+            <!--body name="payload" pos="0 0 0">
+                <geom type="box" mass="0.01" pos="0 0 0.1" size="0.05 0.05 0.05" rgba="1 0 0 0.3"/>
+            </body-->
+           
+            <!-- imu and camera -->
+            <site name="follower/imu" pos="0 0 0" rgba="0.2 0.2 0.2 0"/>
+            <camera name="follower/robotcam" pos="0.31 -0.005 0.00292751" quat= "0.4 0.4 -0.4 -0.4"/> 
+
+            <!-- FL leg -->
+            <body name="follower/FL_hip" pos="0.2399 0.051 0">
+                <inertial pos="-0.022191 0.015144 -1.5e-05" quat="-0.0135493 0.706835 0.0117635 0.707151" mass="1.993" diaginertia="0.00558695 0.00491009 0.00290132" />
+                <joint name="follower/FL_hip_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-1.22173 1.22173" />
+                
+                <!-- FL_hip visual mesh and collision -->
+                <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/hip"/>
+                
+                <!-- <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/hip" mass="1.993"/>  -->
+
+                <geom type="capsule" class="follower/collision" size="0.046 0.0209" pos="0 0.083 0" quat="0.707107 0.707107 0 0"/>
+                
+                <body name="follower/FL_thigh" pos="0 0.083 0">
+                    <inertial pos="-0.005607 -0.003877 -0.048199" quat="0.717987 -0.031246 -0.0335669 0.694544" mass="0.639" diaginertia="0.0058474 0.00571186 0.000324584" />
+                    <joint name="follower/FL_thigh_joint" pos="0 0 0" axis="0 1 0" />
+                    
+                    <!-- FL_thigh visual mesh and collision -->
+                    <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/thigh"/>
+                    <!-- <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/thigh" mass="0.639" /> -->
+                    <geom type="box" class="follower/collision" size="0.125 0.0187 0.0215" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                    
+                    <body name="follower/FL_calf" pos="0 0 -0.25">
+                        <inertial pos="0.00215606 4.88427e-05 -0.166671" quat="0.707462 0.00517582 0.00535172 0.706712" mass="0.267" diaginertia="0.00690975 0.00689712 5.4885e-05" />
+
+                        <joint name="follower/FL_calf_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-2.77507 -0.645772" />
+                        
+                        <!-- FL_calf visual mesh and collision -->
+                        <geom type="mesh" class="follower/visual" rgba="0 0 0 1" mesh="follower/calf" />
+                        <!-- <geom type="mesh" class="follower/visual" rgba="0 0 0 1" mesh="follower/calf" mass="0.267"/> -->
+                        <geom type="box" class="follower/collision" size="0.125 0.0104 0.008" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                        
+                        <!-- FL_foot only collision -->
+                        <geom name="FL2" class="follower/collision" size="0.04" pos="0 0 -0.25" />
+                    </body>
+                </body>
+            </body>
+
+            <!-- FR leg -->
+            <body name="follower/FR_hip" pos="0.2399 -0.051 0">
+                <inertial pos="-0.022191 -0.015144 -1.5e-05" quat="0.0135493 0.706835 -0.0117635 0.707151" mass="1.993" diaginertia="0.00558695 0.00491009 0.00290132" />
+                <joint name="follower/FR_hip_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-1.22173 1.22173" />
+                
+                <!-- FR_hip visual mesh and collision -->
+                <geom type="mesh" mesh="follower/hip" class="follower/visual" quat="0 1 0 0" rgba="0.2 0.2 0.2 1"/>
+                <geom type="capsule" class="follower/collision" size="0.046 0.0209" pos="0 -0.083 0" quat="0.707107 0.707107 0 0"/>
+                
+                <body name="follower/FR_thigh" pos="0 -0.083 0">
+                    <inertial pos="-0.005607 0.003877 -0.048199" quat="0.694544 -0.0335669 -0.031246 0.717987" mass="0.639" diaginertia="0.0058474 0.00571186 0.000324584" />
+                    <joint name="follower/FR_thigh_joint" pos="0 0 0" axis="0 1 0" />
+                    
+                    <!-- FR_thigh visual mesh and collision -->
+                    <geom type="mesh" mesh="follower/thigh_mirror" class="follower/visual" rgba="0.2 0.2 0.2 1" />
+                    <geom type="box" class="follower/collision" size="0.125 0.0187 0.0215" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                    
+                    <body name="follower/FR_calf" pos="0 0 -0.25">
+                        <inertial pos="0.00215606 4.88427e-05 -0.166671" quat="0.707462 0.00517582 0.00535172 0.706712" mass="0.267" diaginertia="0.00690975 0.00689712 5.4885e-05" />
+                        <joint name="follower/FR_calf_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-2.77507 -0.645772" />
+                        
+                        <!-- FR_calf visual mesh and collision -->
+                        <geom type="mesh" mesh="follower/calf" class="follower/visual" rgba="0 0 0 1"/>
+                        <geom type="box" class="follower/collision" size="0.125 0.0104 0.008" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                        
+                        <!-- FR_foot only collision -->
+                        <geom name="FR2" class="follower/collision" size="0.04" pos="0 0 -0.25"/>
+                    </body>
+                </body>
+            </body>
+            
+            <!-- RL leg -->
+            <body name="follower/RL_hip" pos="-0.2399 0.051 0">
+                <inertial pos="0.022191 0.015144 -1.5e-05" quat="0.0117635 0.707151 -0.0135493 0.706835" mass="1.993" diaginertia="0.00558695 0.00491009 0.00290132" />
+                <joint name="follower/RL_hip_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-1.22173 1.22173" />
+                
+                <!-- RL_hip visual mesh and collision -->
+                <geom type="mesh" class="follower/visual" quat="0 0 1 0" rgba="0.2 0.2 0.2 1" mesh="follower/hip"/>
+                <geom type="capsule" class="follower/collision" size="0.046 0.0209" pos="0 0.083 0" quat="0.707107 0.707107 0 0"/>
+                
+                <body name="follower/RL_thigh" pos="0 0.083 0">
+                    <inertial pos="-0.005607 -0.003877 -0.048199" quat="0.717987 -0.031246 -0.0335669 0.694544" mass="0.639" diaginertia="0.0058474 0.00571186 0.000324584" />
+                    <joint name="follower/RL_thigh_joint" pos="0 0 0" axis="0 1 0" />
+                    
+                    <!-- RL_thigh visual mesh and collision -->
+                    <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/thigh"/>
+                    <geom type="box" class="follower/collision" size="0.125 0.0187 0.0215" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                    
+                    <body name="follower/RL_calf" pos="0 0 -0.25">
+                        <inertial pos="0.00215606 4.88427e-05 -0.166671" quat="0.707462 0.00517582 0.00535172 0.706712" mass="0.267" diaginertia="0.00690975 0.00689712 5.4885e-05" />
+                        <joint name="follower/RL_calf_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-2.77507 -0.645772" />
+                        
+                        <!-- RL_calf visual mesh and collision -->
+                        <geom type="mesh" class="follower/visual" rgba="0 0 0 1" mesh="follower/calf"/>
+                        <geom type="box" class="follower/collision" size="0.125 0.0104 0.008" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                        
+                        <!-- RL_foot only collision -->
+                        <geom name="RL2" class="follower/collision" size="0.04" pos="0 0 -0.25"/>
+                    </body>
+                </body>
+            </body>
+            
+            <!-- RR leg -->
+            <body name="follower/RR_hip" pos="-0.2399 -0.051 0">
+                <inertial pos="0.022191 -0.015144 -1.5e-05" quat="-0.0117635 0.707151 0.0135493 0.706835" mass="1.993" diaginertia="0.00558695 0.00491009 0.00290132" />
+                <joint name="follower/RR_hip_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-1.22173 1.22173" />
+                
+                <!-- RR_hip visual mesh and collision -->
+                <geom type="mesh" class="follower/visual" quat="0 0 0 -1" rgba="0.2 0.2 0.2 1" mesh="follower/hip"/>
+                <geom type="capsule" class="follower/collision" size="0.046 0.0209" pos="0 -0.083 0" quat="0.707107 0.707107 0 0"/>
+                
+                <body name="follower/RR_thigh" pos="0 -0.083 0">
+                    <inertial pos="-0.005607 0.003877 -0.048199" quat="0.694544 -0.0335669 -0.031246 0.717987" mass="0.639" diaginertia="0.0058474 0.00571186 0.000324584" />
+                    <joint name="follower/RR_thigh_joint" pos="0 0 0" axis="0 1 0" />
+                    
+                    <!-- RR_thigh visual mesh and collision -->
+                    <geom type="mesh" class="follower/visual" rgba="0.2 0.2 0.2 1" mesh="follower/thigh_mirror"/>
+                    <geom type="box" class="follower/collision" size="0.125 0.0187 0.0215" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                    
+                    <body name="follower/RR_calf" pos="0 0 -0.25">
+                        <inertial pos="0.00215606 4.88427e-05 -0.166671" quat="0.707462 0.00517582 0.00535172 0.706712" mass="0.267" diaginertia="0.00690975 0.00689712 5.4885e-05" />
+                        <joint name="follower/RR_calf_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-2.77507 -0.645772" />
+                        
+                        <!-- RR_calf visual mesh and collision -->
+                        <geom type="mesh" class="follower/visual" rgba="0 0 0 1" mesh="follower/calf"/>
+                        <geom type="box" class="follower/collision" size="0.125 0.0104 0.008" pos="0 0 -0.125" quat="0.707107 0 0.707107 0"/>
+                        
+                        <!-- RR_foot only collision -->
+                        <geom name="RR2" class="follower/collision" size="0.04" pos="0 0 -0.25"/>
+                    </body>
+                </body>
+            </body>
+
+    <geom pos="0.285 0 0.06" quat="1 0 0 0" type="mesh" rgba="0 0 0 1" mesh="follower/base_arm_link" class="follower/visual_arm"  />
+    <body name="follower/pa_link_0_ext" pos="0.285 0 0.13" >
+        <!-- Visual Mesh -->
+        <!-- <geom pos="0 0 -0.07" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="2" rgba="0 0 0 1" mesh="follower/base_arm_link" /> -->
+        <!-- First joint Definition -->
+        <!-- <geom quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="2" rgba="0 0 0 1" mesh="follower/base_arm_link" /> -->
+      <!-- <inertial pos="0.0248 0 0.0169" quat="0.707051 0.0451246 -0.0453544 0.704263" mass="0.554" diaginertia="0.00488868 0.00457 0.00135132"/> -->
+      <inertial pos="0.0248 0.0 0.0169" quat="1.0 0.0 0.0 0.0" mass="0.554" diaginertia="0.001586944 0.001907517 0.001903894" />
+      <joint name="follower/arm_link_1_joint" pos="0. 0 0." axis="0 0 1" limited="false" range="-1.5 1.5"  stiffness="5" damping="0.5"/>
+      <geom type="capsule"
+            class="follower/visual_arm_srbd"
+            pos="-0.070 0.0 -0.055"
+            quat="1.0 0.0 0.0 0.0"
+            size="0.026 0.075"
+            />
+      <!-- Visual Mesh -->
+      <!-- <geom size="0.05 0.055 0.02" pos="0 0 0.02" type="box" rgba="0.75294 0.75294 0.75294 1"/> -->
+      <geom quat="1 0 0 0" type="mesh"   rgba="0 0 0 1" mesh="follower/arm_link_1" class="follower/visual_arm" />
+      <geom type="box" class="follower/collision" size="0.05 0.05 0.04" pos="0. 0 -0.035"   quat="1.0 0.0 0.0 0.0"/>
+      
+      <body name="follower/pa_link_1_ext" pos="0.0498 0 0.034">
+            <!-- <inertial pos="0.0909 0 0.0923" quat="0.707051 0.0451246 -0.0453544 0.704263" mass="0.554" diaginertia="0.00488868 0.00457 0.00135132"/> -->
+            <inertial pos="0.08 0.0 0.12" quat ="0.9238983141513943 0.0 0.3826380863272911 0.0" mass="0.554" diaginertia="0.00457 0.003831 0.001409" />
+            <joint name="follower/arm_link_2_joint" pos="0.01 0 0.0" axis="0 1 0" limited="false" range="0 1" stiffness="8" damping="1.5"/>
+            <geom type="capsule"
+                  class="follower/visual_arm_srbd"
+                  pos="0.055 0.0 0.085"
+                  quat ="0.9238983141513943 0.0 0.3826380863272911 0.0"
+                  size="0.025 0.175"
+                  />
+            
+            <!-- Visual Mesh -->
+            <geom quat="1 0 0 0" type="mesh" rgba="0 0 0 1" mesh="follower/arm_link_2" class="follower/visual_arm" />
+            <geom type="box" class="follower/collision" size="0.15 0.04 0.04" pos="0.08 0.0 0.125" quat ="0.5 0 -0.15 0.0"/>
+            <!-- <geom size="0.15 0.04 0.03" pos="0.1 0 0.14" quat="0.939525 0 -0.342481 0" type="box" rgba="0.75294 0.75294 0.75294 1"/> -->
+            <body name="follower/pa_link_2_ext" pos="0.1817 0 0.1845" quat="1 0 0 0">
+              <!-- <inertial pos="0.0194003 0 -0.125002" quat="0.7 0.616 0.0 0.0" mass="0.25" diaginertia="0.0035088 0.001072 0.00351255"/> -->
+              <inertial pos="0.0194 0.0 -0.125" quat="0.7160633926253526 0.6980352553717256 0.0 0.0" mass="3.5" diaginertia="0.002871232 0.00113008 0.00281757" />
+              <!-- <inertial pos="0.0 0.0 -0.15" quat="1 0 0 0" mass="0.258" diaginertia="0.0018474 0.00171186 0.000324584" /> -->
+              <!-- Visual Mesh -->
+              <joint name="follower/arm_link_3_joint" pos="0. 0 0" axis="0 1 0" limited="false" range="-2 0.5" stiffness="5" damping="0.5"/>
+              <geom type="capsule"
+                    class="follower/visual_arm_srbd"
+                    pos="0.022 0.0 -0.150"
+                    quat="1.0 0.0 0.0 0.0"
+                    size="0.024 0.125"
+                    />
+              <!--  -->
+              <!-- <geom size="0.0175 0.04 0.125" pos="0.0194 0 -0.125" type="box" rgba="0.75294 0.75294 0.75294 1"/> -->
+              <geom quat="1 0 0 0" type="mesh" rgba="0 0 0 1" mesh="follower/arm_link_3" class="follower/visual_arm"  />
+              <geom size="0.001" pos="0.0388 0 -0.25" rgba="0 0 0 1"/>
+              <geom type="box" class="follower/collision" size="0.15 0.02 0.05" pos="0.02 0 -0.15" quat="0.707107 0 0.707107 0"/>
+              <site name="eef" pos="0.045 0 -0.26" size="2" quat="1 0 0 0" rgba="0.0 0.85 0.95 0.0"/>
+              <!-- <geom name="eef_visual_handle"
+                    type="cylinder"
+                    pos="0.04 0 -0.30"
+                    quat="0.707107 0.707107 0 0"
+                    size="0.008 0.05"
+                    rgba="0.75 0.75 0.75 1"
+                    contype="0"
+                    conaffinity="0"
+                    group="2"/>
+              <geom name="eef_visual_disk_left"
+                    type="cylinder"
+                    pos="0.04 -0.05 -0.30"
+                    quat="0.707107 0.707107 0 0"
+                    size="0.028 0.012"
+                    rgba="0.2 0.2 0.2 1"
+                    contype="0"
+                    conaffinity="0"
+                    group="2"/>
+              <geom name="eef_visual_disk_right"
+                    type="cylinder"
+                    pos="0.04 0.05 -0.30"
+                    quat="0.707107 0.707107 0 0"
+                    size="0.028 0.012"
+                    rgba="0.2 0.2 0.2 1"
+                    contype="0"
+                    conaffinity="0"
+                    group="2"/> -->
+              <!-- This body is need for havign the right applied force -->
+              <body name="follower/eef" pos="0.045 0 -0.295" quat="1 0 0 0" >
+              <inertial pos="0.0 0.0 0.0"  mass=" 0.1" diaginertia="0.00205088 0.0008072 0.00201255" />
+                  <geom name="eef" type="sphere" size="0.02" rgba="0.173 0.627 0.17 0." />
+                  
+              </body>
+            </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+
+
+</mujoco>

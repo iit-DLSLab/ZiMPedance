@@ -1,0 +1,43 @@
+<mujoco model="aliengo_description">
+    <compiler angle="radian" meshdir="./assets/" autolimits="true"/>
+    <option cone="elliptic" impratio="100" />
+    <size njmax="500" nconmax="100" />
+    <option gravity='0 0 -9.806' timestep='0.002'/>
+
+
+    <!-- No rename the assests these are the mesh files-->
+    <!-- <asset>
+        <mesh name="follower/trunk" file="trunk.stl" />
+        <mesh name="follower/hip" file="hip.stl" />
+        <mesh name="follower/thigh_mirror" file="thigh_mirror.stl" />
+        <mesh name="follower/calf" file="calf.stl" />
+        <mesh name="follower/thigh" file="thigh.stl" />
+        <mesh name="follower/base_arm_link" file="base_arm_link.stl" />
+        <mesh name="follower/arm_link_1" file="arm_link_1.stl" />
+        <mesh name="follower/arm_link_2" file="arm_link_2.stl" />
+        <mesh name="follower/arm_link_3" file="arm_link_3.stl" />
+        
+    </asset> -->
+
+
+    <!-- pos is used to set the position-->
+    <worldbody>
+        <body name="mountpoint" pos="1.15 0 0.2">
+        <inertial pos="0.022191 -0.015144 -1.5e-05" quat="-0.0117635 0.707151 0.0135493 0.706835" 
+        mass="0.001" diaginertia="0.00558695 0.00491009 0.00290132" />
+
+            <joint name='weight_joint' type="free" />
+            <geom type="box" size="0.14 0.01 0.01" quat="1 0 0 0" rgba="0.5 0.5 0.5 1" 
+            contype="0" conaffinity="1"/>
+            <site name="mount_point_1" pos=" 0.14 0 0" size="0.01" rgba="1 0 0 1"/>
+            <site name="mount_point_2" pos="-0.14 0 0" size="0.01" rgba="1 0 0 1"/>
+            <site name="load_center"   pos="0.07 0 0" size="0.01" rgba="1 1 0  1"/>
+
+        </body>
+
+
+
+
+    </worldbody>
+
+</mujoco>

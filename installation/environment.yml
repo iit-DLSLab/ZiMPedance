@@ -1,0 +1,31 @@
+# Simulation environment for ZiMPedance.
+#
+# Pinocchio must be >= 4.0: the controller builds its model with the 3-argument
+# buildModelFromMJCF(path, JointModelFreeFlyer(), "root_joint"). Pinocchio 3.x parses the
+# same MJCF into a different model (extra free-flyer, no <default> armature, eef site on the
+# wrong link).
+#
+# Create with installation/setup_env.sh, which also builds the acados submodule and sets
+# ACADOS_SOURCE_DIR / LD_LIBRARY_PATH / PYTHONPATH on activation. Exact resolved versions
+# (linux-64): environment.lock.yml.
+name: zimpedance
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pinocchio=4.0.0
+  - casadi=3.7.2
+  - numpy
+  - scipy
+  - matplotlib
+  - gymnasium
+  - tqdm
+  - cmake
+  - make
+  - pip:
+      - mujoco==3.4.0
+      - liecasadi==0.0.7
+      - noise
+      - future-fstrings
+      - cython

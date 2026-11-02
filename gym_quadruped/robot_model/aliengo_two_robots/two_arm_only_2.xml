@@ -1,0 +1,130 @@
+<mujoco model="aliengo">
+    <compiler angle="radian" meshdir="./assets/" autolimits="true"/>
+    <option cone="elliptic" impratio="100" />
+    <size njmax="500" nconmax="100" />
+    <option gravity='0 0 -9.806' timestep='0.002'/>
+
+
+
+    <default>
+
+        <joint damping="0." armature="0.01" frictionloss="0." />
+        
+        <default class="leader/visual_arm">
+            <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+        <default class="leader/visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+        <default class="leader/collision">
+            <geom group="3" rgba="0.2 0.2 0.2 0.5"/>
+        </default> 
+
+        <default class="leader/hip">
+            <motor ctrlrange="-4400.4 4400.4"/>
+        </default>
+        <default class="leader/thigh">
+            <motor ctrlrange="-3500.278 3500.278"/>
+        </default>
+        <default class="leader/calf">
+            <motor ctrlrange="-3500.278 3500.278"/>
+        </default>
+
+
+        <default class="leader/arm_joint_params_1">
+            <joint  axis="0 0 1" limited="true" range="-1.5 1.5"   stiffness="10" damping="4.2"/>
+        </default>
+
+        <default class="leader/arm_joint_params_2">
+            <joint axis="0 1 0" limited="false" range="0 1" stiffness="25" damping="10.02"/>
+        </default>
+
+        <default class="leader/arm_joint_params_3">
+            <joint axis="0 1 0" limited="false" range="0 1"  stiffness="0.01" damping="4"/>
+        </default>
+
+    </default>
+
+    <asset>
+        <mesh name="leader/trunk" file="trunk.stl" />
+        <mesh name="leader/hip" file="hip.stl" />
+        <mesh name="leader/thigh_mirror" file="thigh_mirror.stl" />
+        <mesh name="leader/calf" file="calf.stl" />
+        <mesh name="leader/thigh" file="thigh.stl" />
+        <mesh name="leader/base_arm_link" file="base_arm_link.stl" />
+        <mesh name="leader/arm_link_1" file="arm_link_1.stl" />
+        <mesh name="leader/arm_link_2" file="arm_link_2.stl" />
+        <mesh name="leader/arm_link_3" file="arm_link_3.stl" />
+        
+    </asset>
+
+  <worldbody>
+        <body name="leader/trunk" pos="1.8 0 0.2">
+            <inertial pos="0.00846406 0.00404455 -0.000762916" quat="-3.12625e-05 0.708321 0.00247254 0.705886" mass="500.042" diaginertia="0.174706 0.161175 0.033357" />
+            <freejoint/>
+            
+            <!-- trunk visual mesh and collision -->
+            <geom type="box" class="leader/visual"    size="0.2 0.15 0.2"   quat="1.0 0.0 0.0 0.0"/>
+            <geom type="box" class="leader/collision" size="0.2 0.15 0.2"   quat="1.0 0.0 0.0 0.0"/>
+
+
+
+
+    
+
+    <geom pos="-0.15 0 0.2" quat="-3.673205103346574e-06 -0.0 0.0 0.9999999999932537" type="mesh" class="leader/visual_arm"   contype="0" conaffinity="0"  rgba="0 0 0 1" mesh="leader/base_arm_link" />
+
+
+    <body name="leader/pa_link_0_ext" pos="-0.15 0 0.2" quat="-3.673205103346574e-06 -0.0 0.0 0.9999999999932537" >
+      <inertial pos="0.0248 0.0 0.0169" quat="1.0 0.0 0.0 0.0" mass="0.554" diaginertia="0.001586944 0.001907517 0.001903894" />
+
+      <joint name="leader/arm_link_1_joint" pos="0. 0 0." class="leader/arm_joint_params_1"/>
+      <geom quat="1 0 0 0" type="mesh"   class="leader/visual_arm"  contype="0" conaffinity="0"  rgba="0 0 0 1" mesh="leader/arm_link_1" />
+      <geom type="box" class="leader/collision" size="0.05 0.05 0.04" pos="0. 0 -0.035"   quat="1.0 0.0 0.0 0.0"/>
+      <body name="leader/pa_link_1_ext" pos="0.0498 0 0.034">
+            <inertial pos="0.08 0.0 0.12" quat ="0.9238983141513943 0.0 0.3826380863272911 0.0" mass="0.554" diaginertia="0.00457 0.003831 0.001409" />
+            <joint name="leader/arm_link_2_joint" pos="0.01 0 0.0" class="leader/arm_joint_params_2"/>
+            
+            <geom quat="1 0 0 0" type="mesh" class="leader/visual_arm"  contype="0" conaffinity="0"  rgba="0 0 0 1" mesh="leader/arm_link_2" />
+            <geom type="box" class="leader/collision" size="0.15 0.04 0.04" pos="0.08 0.0 0.125" quat ="0.5 0 -0.15 0.0"/>
+            <body name="leader/pa_link_2_ext" pos="0.1817 0 0.1845" quat="1 0 0 0">
+              <inertial pos="0.0194 0.0 -0.125" quat="0.7160633926253526 0.6980352553717256 0.0 0.0" mass="0.25" diaginertia="0.00205088 0.0008072 0.00201255" />
+              <joint name="leader/arm_link_3_joint" pos="0. 0 0" class="leader/arm_joint_params_3"/>
+
+              <geom quat="1 0 0 0" type="mesh" class="leader/visual_arm"  contype="0" conaffinity="0"  rgba="0 0 0 1" mesh="leader/arm_link_3" />
+              <geom size="0.001" pos="0.0388 0 -0.25" rgba="0 0 0 1"/>
+              <geom type="box" class="leader/collision" size="0.15 0.02 0.05" pos="0.02 0 -0.15" quat="0.707107 0 0.707107 0"/>
+              <site name="eef_leader" pos="0.04 0 -0.24" size="0.01" quat="1 0 0 0" rgba="0 0 0 0."/>
+              <body name="eef_leader" pos="0.04 0 -0.25" quat="1 0 0 0">
+              <inertial pos="0.0 0.0 0.0" quat="0.7160633926253526 0.6980352553717256 0.0 0.0" mass="0.05" diaginertia="0.00205088 0.0008072 0.00201255" />
+                  <geom name="eef_leader" type="sphere" size="0.02" rgba="0 1 0 0" contype="0" conaffinity="0"/>
+              </body>
+
+            </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+
+
+    
+    <!-- <keyframe>
+    
+        <key name="home_leader" qpos="
+        0. 0 0.35  
+        1 0. 0 0
+        0 0.9 -1.8 
+        0 0.9 -1.8
+        0 0.9 -1.8
+        0 0.9 -1.8
+        0 0.0  0.0
+        "
+
+        ctrl="0 0.9 -1.8 
+              0 0.9 -1.8 
+              0 0.9 -1.8 
+              0 0.9 -1.8 
+              "/>
+    </keyframe> -->
+</mujoco>

@@ -1,0 +1,47 @@
+<!-- Actuated aliengo_follower: the robot of new_urdf_export.xml (legs, front passive arm) plus its
+     leg motors, IMU and home keyframe, as aliengo_leader/aliengo_leader_actuated.xml does for the
+     leader. Terrain scenes and the two-robot composition include this file. -->
+<mujoco model="aliengo_follower">
+  <include file="new_urdf_export.xml"/>
+
+    <actuator>       
+        
+        <motor name="follower/FL_hip"   class="follower/hip"    gear="1" joint="follower/FL_hip_joint"/>
+        <motor name="follower/FL_thigh" class="follower/thigh"  gear="1" joint="follower/FL_thigh_joint"/>
+        <motor name="follower/FL_calf"  class="follower/calf"   gear="1" joint="follower/FL_calf_joint"/>
+        <motor name="follower/FR_hip"   class="follower/hip"    gear="1" joint="follower/FR_hip_joint"/>
+        <motor name="follower/FR_thigh" class="follower/thigh"  gear="1" joint="follower/FR_thigh_joint"/>
+        <motor name="follower/FR_calf"  class="follower/calf"   gear="1" joint="follower/FR_calf_joint"/>
+       
+        <motor name="follower/RL_hip"   class="follower/hip"    gear="1" joint="follower/RL_hip_joint"/>
+        <motor name="follower/RL_thigh" class="follower/thigh"  gear="1" joint="follower/RL_thigh_joint"/>
+        <motor name="follower/RL_calf"  class="follower/calf"   gear="1" joint="follower/RL_calf_joint"/>
+         <motor name="follower/RR_hip"   class="follower/hip"    gear="1" joint="follower/RR_hip_joint"/>
+        <motor name="follower/RR_thigh" class="follower/thigh"  gear="1" joint="follower/RR_thigh_joint"/>
+        <motor name="follower/RR_calf"  class="follower/calf"   gear="1" joint="follower/RR_calf_joint" />
+    </actuator>
+
+    <sensor>
+        <accelerometer name='imu' site="follower/imu" />
+        <gyro name="follower/imu_gyro" site="follower/imu" />
+    </sensor>
+    
+    <keyframe>
+    
+        <key name="home" qpos="
+        0. 0 0.35  
+        1 0. 0 0
+        0 0.9 -1.8 
+        0 0.9 -1.8
+        0 0.9 -1.8
+        0 0.9 -1.8
+        0 0.0  0.0
+        "
+
+        ctrl="0 0.9 -1.8 
+              0 0.9 -1.8 
+              0 0.9 -1.8 
+              0 0.9 -1.8 
+              "/>
+    </keyframe>
+</mujoco>

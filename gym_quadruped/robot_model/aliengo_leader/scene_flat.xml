@@ -1,0 +1,127 @@
+<mujoco model="aliengo scene">
+  <include file="new_urdf_export.xml"/>
+  <!-- <include file="weight.xml"/> -->
+  <!-- <include file="aliengo_arm_leader_named.xml"/> -->
+    <!-- <include file="aliengo_arm_follower_named.xml"/> -->
+
+
+  <statistic center="0 0 0.1" extent="0.8"/>
+
+    <visual>
+        <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+        <rgba haze="0.99 0.99 0.99 1"/>
+        <global azimuth="-130" elevation="-20"/>
+    </visual>
+
+    <asset>
+        <texture
+                type="skybox"
+                builtin="gradient"
+                rgb1="0.99 0.99 0.99"
+                rgb2="0.99 0.99 0.99"
+                width="512"
+                height="3072"
+        />
+        <texture
+                type="2d"
+                name="groundplane"
+                builtin="checker"
+                mark="edge"
+                rgb1="0.93 0.93 0.93"
+                rgb2="0.93 0.93 0.93"
+                markrgb="0 0 0"
+                width="200"
+                height="200"
+        />
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.0"/>
+    </asset>
+
+  <worldbody>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true" />
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" />
+    <!-- <geom pos="2 0.0 0.32499999999999996" type="box" size="10 2 0.025" quat="1.0 0.0 -0.1 0.0" rgba="0.2 0.2 0.2 1"  contype="1" conaffinity="0"/> -->
+
+  </worldbody>
+
+
+    <!-- <keyframe>
+        <key name="leader_home" qpos="0.8  0 0.35 1 0 0 0 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0 0. 0.8
+                                     -0.8 0  0.35 1 0 0 0 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0 0. 0.8
+                               
+                             "
+        ctrl="0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0 0 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0 0
+              "/>
+
+    </keyframe> -->
+    <!-- <keyframe>
+        <key name="home" qpos="0 0 0.35 1 0 0 0 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0 0. 0.8
+                               
+                             "
+        ctrl="0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0.9 -1.8 0 0 0
+              "/>
+    </keyframe> -->
+    <!-- <tendon>
+    <spatial name="link_arms2" limited="true" range="0 1" width="0.01" stiffness="20">
+      <site site="eef_leader" />
+      <site site="mount_pooint_1" />
+    </spatial>
+  </tendon>   -->
+    <actuator>       
+        
+        <motor name="leader/FL_hip"   class="leader/hip"    gear="1" joint="leader/FL_hip_joint"/>
+        <motor name="leader/FL_thigh" class="leader/thigh"  gear="1" joint="leader/FL_thigh_joint"/>
+        <motor name="leader/FL_calf"  class="leader/calf"   gear="1" joint="leader/FL_calf_joint"/>
+        <motor name="leader/FR_hip"   class="leader/hip"    gear="1" joint="leader/FR_hip_joint"/>
+        <motor name="leader/FR_thigh" class="leader/thigh"  gear="1" joint="leader/FR_thigh_joint"/>
+        <motor name="leader/FR_calf"  class="leader/calf"   gear="1" joint="leader/FR_calf_joint"/>
+       
+        <motor name="leader/RL_hip"   class="leader/hip"    gear="1" joint="leader/RL_hip_joint"/>
+        <motor name="leader/RL_thigh" class="leader/thigh"  gear="1" joint="leader/RL_thigh_joint"/>
+        <motor name="leader/RL_calf"  class="leader/calf"   gear="1" joint="leader/RL_calf_joint"/>
+         <motor name="leader/RR_hip"   class="leader/hip"    gear="1" joint="leader/RR_hip_joint"/>
+        <motor name="leader/RR_thigh" class="leader/thigh"  gear="1" joint="leader/RR_thigh_joint"/>
+        <motor name="leader/RR_calf"  class="leader/calf"   gear="1" joint="leader/RR_calf_joint" />
+    </actuator>
+    
+
+    <sensor>
+        <accelerometer name='imu' site="imu" />
+        <gyro name="imu_gyro" site="imu" />
+    </sensor>
+
+    <keyframe>
+    
+        <key name="home_wide" qpos="
+        0. 0 0.35  
+        1 0. 0 0
+        0.28 0.9 -1.8 
+       -0.28 0.9 -1.8
+        0.28 0.9 -1.8
+       -0.28 0.9 -1.8
+        0 0 0
+        "
+
+        ctrl="-0.28 0.9 -1.8 
+               0.28 0.9 -1.8 
+              -0.28 0.9 -1.8 
+               0.28 0.9 -1.8 
+              "/>
+
+        <key name="home" qpos="
+        0. 0 0.35  
+        1 0. 0 0
+        0 0.9 -1.8 
+        0 0.9 -1.8
+        0 0.9 -1.8
+        0 0.9 -1.8
+        0 0.0  0.0
+        "
+
+        ctrl="0 0.9 -1.8 
+              0 0.9 -1.8 
+              0 0.9 -1.8 
+              0 0.9 -1.8 
+              "/>
+    </keyframe>
+    
+</mujoco>

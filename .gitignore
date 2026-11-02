@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# acados: generated solvers and the OCP description dumped in the working directory
+c_generated_code/
+*_ocp.json
+centroidal_nmpc.json
+
+# simulation outputs
+*.npz
+*.pkl
+gym_quadruped/robot_model/*/scene_new.xml
+
+# editors and OS
+.vscode/
+.idea/
+.DS_Store
